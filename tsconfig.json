@@ -1,19 +1,18 @@
 {
   "compilerOptions": {
-    "incremental": true,
-    "target": "esnext",
-    "module": "commonjs",
+    "target": "ES2022",
+    "moduleResolution": "NodeNext",
+    "module": "NodeNext",
     "rootDir": "./src",
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
     "outDir": "./dist",
     "removeComments": true,
-    "preserveValueImports": false,
+    "importsNotUsedAsValues": "remove",
+    "downlevelIteration": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
+    "skipDefaultLibCheck": true,
     "skipLibCheck": true
   }
 }
