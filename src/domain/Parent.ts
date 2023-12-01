@@ -15,6 +15,10 @@ export const ParentCreationSchema = z.object({
 
 export type ParentCreationType = z.infer<typeof ParentCreationSchema>
 
+export const ParentUpdateSchema = ParentCreationSchema.partial().omit({ id: true })
+
+export type ParentUpdateType = z.infer<typeof ParentUpdateSchema>
+
 export class Parent implements Serializable { 
   readonly id: string
   firstName: ParentCreationType['firstName']
@@ -25,13 +29,15 @@ export class Parent implements Serializable {
   document: ParentCreationType['document'] 
 
   constructor(data: ParentCreationType) { 
-    this.id = data.id ?? randomUUID()
-    this.firstName = data.firstName
-    this.surname = data.surname
-    this.phones = data.phones
-    this.emails = data.emails
-    this.address = data.address
-    this.document = data.document
+    const parsedData = ParentCreationSchema.parse(data)
+
+    this.id = parsedData.id ?? randomUUID()
+    this.firstName = parsedData.firstName
+    this.surname = parsedData.surname
+    this.phones = parsedData.phones
+    this.emails = parsedData.emails
+    this.address = parsedData.address
+    this.document = parsedData.document
   }
 
   static fromObject(data: Record<string, unknown>) { 
