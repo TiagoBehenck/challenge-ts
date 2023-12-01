@@ -29,11 +29,11 @@ export class Student implements Serializable {
   surname: StudentCreationType['surname']
   document: StudentCreationType['document'] 
   bloodType: StudentCreationType['bloodType']
-  birthDate: StudentCreationType['birthDate']
+  birthDate: Date
   allergies: StudentCreationType['allergies']
   medications: StudentCreationType['medications']
-  startDate: StudentCreationType['startDate']
-  parents: StudentCreationType['parents']
+  startDate: Date
+  #parents: StudentCreationType['parents']
   class: StudentCreationType['class']
 
   constructor(data: StudentCreationType) { 
@@ -44,12 +44,20 @@ export class Student implements Serializable {
     this.surname = parsedData.surname
     this.document = parsedData.document
     this.bloodType = parsedData.bloodType
-    this.birthDate = parsedData.birthDate
+    this.birthDate = new Date(parsedData.birthDate)
     this.allergies = parsedData.allergies
     this.medications = parsedData.medications
-    this.startDate = parsedData.startDate
-    this.parents = parsedData.parents
+    this.startDate = new Date(parsedData.startDate)
+    this.#parents = parsedData.parents
     this.class = parsedData.class
+  }
+
+  get parents() { 
+    return this.#parents
+  }
+
+  set parents(value) { 
+    this.#parents = value
   }
 
   static fromObject(data: Record<string, unknown>) { 
