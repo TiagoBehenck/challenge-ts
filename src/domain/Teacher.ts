@@ -61,7 +61,7 @@ export class Teacher implements Serializable {
       emails: this.emails,
       document: this.document,
       salary: this.salary,
-      hiringDate: this.hiringDate,
+      hiringDate: this.hiringDate.toISOString(),
       major: this.major,
     }
   }

@@ -73,10 +73,10 @@ export class Student implements Serializable {
       surname: this.surname,
       document: this.document,
       bloodType: this.bloodType,
-      birthDate: this.birthDate,
+      birthDate: this.birthDate.toISOString(),
       allergies: this.allergies,
       medications: this.medications,
-      startDate: this.startDate,
+      startDate: this.startDate.toISOString(),
       parents: this.parents,
       class: this.class
     }
