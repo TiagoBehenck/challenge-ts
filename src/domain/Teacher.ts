@@ -8,7 +8,7 @@ export const TeacherCreationSchema = z.object({
   firstName: z.string(),
   surname: z.string(),
   phone: z.string(),
-  emails: z.string().email(),
+  email: z.string().email(),
   document: z.string(),
   salary: z.number().min(1),
   hiringDate: z.string().datetime().refine((date) => !isNaN(new Date(date).getTime())),
@@ -25,8 +25,8 @@ export class Teacher implements Serializable {
   readonly id: string
   firstName: TeacherCreationType['firstName']
   surname: TeacherCreationType['surname']
-  phones: TeacherCreationType['phone'] 
-  emails: TeacherCreationType['emails'] 
+  phone: TeacherCreationType['phone'] 
+  email: TeacherCreationType['email'] 
   document: TeacherCreationType['document'] 
   salary: TeacherCreationType['salary'] 
   hiringDate: Date
@@ -38,8 +38,8 @@ export class Teacher implements Serializable {
     this.id = parsedData.id ?? randomUUID()
     this.firstName = parsedData.firstName
     this.surname = parsedData.surname
-    this.phones = parsedData.phone
-    this.emails = parsedData.emails
+    this.phone = parsedData.phone
+    this.email = parsedData.email
     this.document = parsedData.document
     this.salary = parsedData.salary
     this.hiringDate = new Date(parsedData.hiringDate)
@@ -57,8 +57,8 @@ export class Teacher implements Serializable {
       id: this.id,
       firstName: this.firstName,
       surname: this.surname,
-      phones: this.phones,
-      emails: this.emails,
+      phone: this.phone,
+      email: this.email,
       document: this.document,
       salary: this.salary,
       hiringDate: this.hiringDate.toISOString(),
