@@ -4,10 +4,10 @@ import { Service } from './BaseService.js'
 
 export class ParentService extends Service { 
   update(id: string, newData: ParentUpdateType) { 
-    const existing = this.findById(id) as Parent
+    const entity = this.findById(id) as Parent
     
     const updated = new Parent({
-      ...existing.toObject(),
+      ...entity.toObject(),
       ...newData,
     })
 
