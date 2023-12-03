@@ -1,5 +1,5 @@
 import { Parent, ParentCreationType, ParentUpdateType } from '../domain/Parent.js'
-import { ConflictError } from '../domain/errors/ConflictError.js'
+import { ConflictError } from '../domain/errors/Conflict.js'
 import { Service } from './BaseService.js'
 
 export class ParentService extends Service { 
