@@ -4,9 +4,9 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 
 import { Serializable, SerializableStatic } from '../domain/types.js'
 
-export abstract class Database { 
+export abstract class Database<Entity> { 
   protected readonly dbPath: string
-  protected dbData: Map<string, Serializable> = new Map()
+  protected dbData: Map<string, Entity> = new Map()
   readonly dbEntity: SerializableStatic
 
   constructor(entity: SerializableStatic) { 
@@ -43,7 +43,7 @@ export abstract class Database {
     return this
   }
 
-  list(): Serializable[] { 
+  list(): Entity[] { 
     return [...this.dbData.values()]
   }
 
@@ -53,7 +53,7 @@ export abstract class Database {
     return this.#updateFile()
   }
 
-  save(entity: Serializable) { 
+  save(entity: Entity) { 
     this.dbData.set(entity.id, entity)
 
     return this.#updateFile()

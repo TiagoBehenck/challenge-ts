@@ -18,7 +18,7 @@ export class ParentService {
     return this.repository.listBy(property, value)
   }
 
-  findById(id: string){
+  findById(id: string) {
     const entity = this.repository.findById(id)
 
     if(!entity) throw new NotFoundError(id, this.repository.dbEntity)
@@ -27,7 +27,7 @@ export class ParentService {
   }
 
   update(id: string, newData: ParentUpdateType) { 
-    const existing = this.findById(id) as Parent
+    const existing = this.findById(id)
     const updated = new Parent({
       ...existing.toObject(),
       ...newData,
