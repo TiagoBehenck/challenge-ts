@@ -8,7 +8,7 @@ export class TeacherService extends Service<
   TeacherCreationType  
 > { 
   update(id: string, newData: TeacherUpdateType) { 
-    const entity = this.findById(id) as Teacher
+    const entity = this.findById(id)
     
     const updated = new Teacher({
       ...entity.toObject(),
