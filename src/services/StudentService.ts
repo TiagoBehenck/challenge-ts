@@ -1,20 +1,22 @@
 import { Database } from '../data/Db.js'
 import { Parent } from '../domain/Parent.js'
-import { Serializable } from '../domain/types.js'
-import { ConflictError } from '../domain/errors/Conflict.js'
 import { Student, StudentCreationType, StudentUpdateType } from '../domain/Student.js'
+import { ConflictError } from '../domain/errors/Conflict.js'
 
-import { ParentService } from './ParentService.js'
-import { Service } from './BaseService.js'
-import { unknown } from 'zod'
 import { EmptyDependencyError } from '../domain/errors/EmptyDependency.js'
+import { Service } from './BaseService.js'
+import { ParentService } from './ParentService.js'
 
-export class StudentService extends Service {
-  constructor(repository: Database, private readonly parentService: ParentService) {
+export class StudentService extends Service<
+  Student,
+  StudentUpdateType,
+  StudentCreationType
+  > {
+  constructor(repository: Database<Student>, private readonly parentService: ParentService) {
     super(repository)
   }
-  update(id: string, newData: StudentUpdateType): Serializable {
-    const entity = this.findById(id) as Student
+  update(id: string, newData: StudentUpdateType) {
+    const entity = this.findById(id)
     
     const updated = new Student({
       ...entity.toObject(),
@@ -25,7 +27,7 @@ export class StudentService extends Service {
     
     return updated
   }
-  create(creationData: StudentCreationType): Serializable {
+  create(creationData: StudentCreationType) {
     const existing = this.repository.listBy('document', creationData.document)
 
     if (existing.length > 0) throw new ConflictError(creationData.document, this.repository.dbEntity);

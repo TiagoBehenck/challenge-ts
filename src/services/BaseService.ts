@@ -2,8 +2,12 @@ import { Database } from '../data/Db.js'
 import { NotFoundError } from '../domain/errors/NotFound.js'
 import { Serializable } from '../domain/types.js'
 
-export abstract class Service { 
-  constructor(protected readonly repository: Database) {}
+export abstract class Service<
+  Domain extends Serializable,
+  DomainUpdate, 
+  DomainCreate,
+> { 
+  constructor(protected readonly repository: Database<Domain>) { }
 
   list() {
     return this.repository.list()
@@ -25,7 +29,7 @@ export abstract class Service {
     return entity
   }
 
-  abstract update(id: string, newData: unknown): Serializable
+  abstract update(id: string, newData: DomainUpdate): Domain
 
-  abstract create(creationData: unknown): Serializable
+  abstract create(creationData: DomainCreate): Domain
 }

@@ -2,10 +2,14 @@ import { Parent, ParentCreationType, ParentUpdateType } from '../domain/Parent.j
 import { ConflictError } from '../domain/errors/Conflict.js'
 import { Service } from './BaseService.js'
 
-export class ParentService extends Service { 
+export class ParentService extends Service<
+  Parent,
+  ParentUpdateType,
+  ParentCreationType  
+> { 
   update(id: string, newData: ParentUpdateType) { 
-    const entity = this.findById(id) as Parent
-    
+    const entity = this.findById(id)
+
     const updated = new Parent({
       ...entity.toObject(),
       ...newData,
