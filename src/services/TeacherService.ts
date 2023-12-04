@@ -2,11 +2,7 @@ import { Teacher, TeacherCreationType, TeacherUpdateType } from '../domain/Teach
 import { ConflictError } from '../domain/errors/Conflict.js'
 import { Service } from './BaseService.js'
 
-export class TeacherService extends Service<
-  Teacher,
-  TeacherUpdateType,
-  TeacherCreationType  
-> { 
+export class TeacherService extends Service<typeof Teacher> { 
   update(id: string, newData: TeacherUpdateType) { 
     const entity = this.findById(id)
     

@@ -1,13 +1,9 @@
 import { Database } from '../data/Db.js'
 import { NotFoundError } from '../domain/errors/NotFound.js'
-import { Serializable } from '../domain/types.js'
+import { Serializable, SerializableStatic } from '../domain/types.js'
 
-export abstract class Service<
-  Domain extends Serializable,
-  DomainUpdate, 
-  DomainCreate,
-> { 
-  constructor(protected readonly repository: Database<Domain>) { }
+export abstract class Service<E extends SerializableStatic, I extends Serializable = InstanceType<E>> { 
+  constructor(protected readonly repository: Database<E>) { }
 
   list() {
     return this.repository.list()
@@ -17,8 +13,9 @@ export abstract class Service<
     this.repository.remove(id)
   }
 
-  listBy(property: string, value: any) { 
-    return this.repository.listBy(property, value)
+  listBy<P extends keyof I>(property: P, value: I[P]) {
+    const entity = this.repository.listBy(property, value)
+    return entity
   }
 
   findById(id: string) {
@@ -29,7 +26,7 @@ export abstract class Service<
     return entity
   }
 
-  abstract update(id: string, newData: DomainUpdate): Domain
+  abstract update(id: string, newData: unknown): I
 
-  abstract create(creationData: DomainCreate): Domain
+  abstract create(creationData: unknown): I
 }

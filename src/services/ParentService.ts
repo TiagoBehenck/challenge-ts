@@ -1,12 +1,9 @@
 import { Parent, ParentCreationType, ParentUpdateType } from '../domain/Parent.js'
 import { ConflictError } from '../domain/errors/Conflict.js'
+import { SerializableStatic } from '../domain/types.js'
 import { Service } from './BaseService.js'
 
-export class ParentService extends Service<
-  Parent,
-  ParentUpdateType,
-  ParentCreationType  
-> { 
+export class ParentService extends Service<typeof Parent> { 
   update(id: string, newData: ParentUpdateType) { 
     const entity = this.findById(id)
 

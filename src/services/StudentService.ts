@@ -7,12 +7,8 @@ import { EmptyDependencyError } from '../domain/errors/EmptyDependency.js'
 import { Service } from './BaseService.js'
 import { ParentService } from './ParentService.js'
 
-export class StudentService extends Service<
-  Student,
-  StudentUpdateType,
-  StudentCreationType
-  > {
-  constructor(repository: Database<Student>, private readonly parentService: ParentService) {
+export class StudentService extends Service<typeof Student> {
+  constructor(repository: Database<typeof Student>, private readonly parentService: ParentService) {
     super(repository)
   }
   update(id: string, newData: StudentUpdateType) {
@@ -41,13 +37,13 @@ export class StudentService extends Service<
   } 
 
   getParents(studentId: string) {
-    const student = this.findById(studentId) as Student
+    const student = this.findById(studentId)
     
-    return student.parents.map((parent) => this.parentService.findById(parent)) as Parent[]
+    return student.parents.map((parent) => this.parentService.findById(parent))
   }
 
   linkParents(studentId: string, parentsToUpdate: StudentCreationType['parents']) { 
-    const student = this.findById(studentId) as Student
+    const student = this.findById(studentId)
     parentsToUpdate.forEach((parent) => this.parentService.findById(parent))
 
     const newParents = parentsToUpdate.filter((parentId) => !student.parents.includes(parentId))

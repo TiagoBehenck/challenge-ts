@@ -4,9 +4,9 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 
 import { Serializable, SerializableStatic } from '../domain/types.js'
 
-export abstract class Database<Domain extends Serializable> { 
+export abstract class Database<S extends SerializableStatic, I extends Serializable = InstanceType<S>> { 
   protected readonly dbPath: string
-  protected dbData: Map<string, Domain> = new Map()
+  protected dbData: Map<string, I> = new Map()
   readonly dbEntity: SerializableStatic
 
   constructor(entity: SerializableStatic) { 
@@ -43,7 +43,7 @@ export abstract class Database<Domain extends Serializable> {
     return this
   }
 
-  list(): Domain[] { 
+  list(): I[] { 
     return [...this.dbData.values()]
   }
 
@@ -53,13 +53,13 @@ export abstract class Database<Domain extends Serializable> {
     return this.#updateFile()
   }
 
-  save(entity: Domain) { 
+  save(entity: I) { 
     this.dbData.set(entity.id, entity)
 
     return this.#updateFile()
   }
 
-  listBy(property: string, value: any) { 
+  listBy<P extends keyof I>(property: P, value: I[P]) { 
     const allData = this.list()
 
     return allData.filter((data) => { 
