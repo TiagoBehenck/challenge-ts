@@ -11,6 +11,7 @@ export class StudentService extends Service<typeof Student> {
   constructor(repository: Database<typeof Student>, private readonly parentService: ParentService) {
     super(repository)
   }
+
   update(id: string, newData: StudentUpdateType) {
     const entity = this.findById(id)
     
@@ -23,6 +24,7 @@ export class StudentService extends Service<typeof Student> {
     
     return updated
   }
+  
   create(creationData: StudentCreationType) {
     const existing = this.repository.listBy('document', creationData.document)
 
