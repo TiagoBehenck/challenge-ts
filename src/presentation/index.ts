@@ -6,6 +6,8 @@ import Express, {
 import helmet from 'helmet'
 import type { Server } from 'http'
 
+import { parentRouterFactory } from './parent.js'
+
 import { ServiceList } from '../app.js'
 import { AppConfig } from '../config.js'
 
@@ -15,21 +17,21 @@ export async function WebLayer(config: AppConfig, services: ServiceList) {
   app.use(helmet())
   app.use(Express.json())
 
-  app.use("/classes", classRouterFactory())
-  app.use("/teachers", teacherRouterFactory())
-  app.use("/parents", parentRouterFactory())
-  app.use("/students", studentRouterFactory())
+  // app.use('/classes', classRouterFactory())
+  // app.use('/teachers', teacherRouterFactory())
+  app.use('/parents', parentRouterFactory(services.parents, services.studet))
+  // app.use('/students', studentRouterFactory())
 
-  app.get("/ping", (_, res) => {
-    res.send("pong").end()
+  app.get('/ping', (_, res) => {
+    res.send('pong').end()
   })
 
   app.use(async (err: any, _: Request, res: Response, next: NextFunction) => {
     if (err) {
       return res.status(err?.status ?? 500).json({
-        code: err?.code ?? "UNKNOW_ERROR",
-        message: err?.message ?? "No error message",
-        name: err?.name ?? "InternalError",
+        code: err?.code ?? 'UNKNOW_ERROR',
+        message: err?.message ?? 'No error message',
+        name: err?.name ?? 'InternalError',
       })
     }
 
@@ -37,7 +39,7 @@ export async function WebLayer(config: AppConfig, services: ServiceList) {
   })
 
   const start = async () => {
-    console.debug("Starting Web Layer")
+    console.debug('Starting Web Layer')
 
     server = app.listen(config.PORT, () =>
       console.info(`Listening on port ${config.PORT}`)
@@ -56,7 +58,7 @@ export async function WebLayer(config: AppConfig, services: ServiceList) {
           exitCode = 1
         }
 
-        console.info("Web Layer stopped")
+        console.info('Web Layer stopped')
         process.exit(exitCode)
       })
     }
