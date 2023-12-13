@@ -1,8 +1,8 @@
-import { Router } from 'express'
+import { type Request, Router } from 'express'
 
 import { ParentService } from '../services/ParentService.js'
 import { StudentService } from '../services/StudentService.js'
-import { ParentCreationSchema, ParentUpdateSchema } from '../domain/Parent.js'
+import { ParentCreationSchema, ParentCreationType, ParentUpdateSchema } from '../domain/Parent.js'
 
 import zodValidationMiddleware from './middlewares/zodValidationMiddleware.js'
 
@@ -21,7 +21,9 @@ export function parentRouterFactory(parentService: ParentService, studentService
     }
   })
 
-  router.post('/', zodValidationMiddleware(ParentCreationSchema), async (req, res, next) => { 
+  router.post('/',
+  zodValidationMiddleware(ParentCreationSchema.omit({ id: true })),
+    async (req: Request<never, any, Omit<ParentCreationType, 'id'>>, res, next) => { 
     try {
       const parent = parentService.create(req.body)
 
