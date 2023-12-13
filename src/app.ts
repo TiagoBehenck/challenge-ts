@@ -36,7 +36,7 @@ function initDependencies() {
     services: { 
       teacher: teacherService,
       parents: parentsService,
-      studet: studetService,
+      student: studetService,
       class: classService,
     }
   }
