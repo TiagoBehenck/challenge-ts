@@ -5,6 +5,7 @@ import Express, {
 } from 'express'
 import helmet from 'helmet'
 import type { Server } from 'http'
+import { rateLimit } from 'express-rate-limit'
 
 import { parentRouterFactory } from './parent.js'
 
@@ -17,7 +18,14 @@ import { teacherRouterFactory } from './teacher.js'
 export async function WebLayer(config: AppConfig, services: ServiceList) {
   const app = Express()
   let server: Server | undefined
+  const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    limit: 100,
+    standardHeaders: 'draft-7',
+    legacyHeaders: false,
+  })
   app.use(helmet())
+  app.use(limiter)
   app.use(Express.json())
 
   app.use('/classes', classRouterFactory(services.class))
